@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 export interface ChapterProps {
   number: number;
   title: string;
@@ -6,18 +10,32 @@ export interface ChapterProps {
 }
 
 export function Chapter({ number, title, id, children }: ChapterProps) {
-  const padded = String(number).padStart(2, '0');
+  const padded = String(number).padStart(2, "0");
+
   return (
-    <section id={id} className="py-20 md:py-28 border-t border-border-soft scroll-mt-24">
-      <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent mb-4">
+    <motion.section
+      id={id}
+      className="py-20 md:py-28 border-t border-border scroll-mt-24"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <p
+        className="text-[10px] tracking-[0.3em] uppercase text-accent mb-5"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
         Chapter {padded}
       </p>
-      <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] mb-8 leading-[1.1] text-text">
+      <h2
+        className="text-3xl md:text-4xl tracking-[-0.02em] mb-8 leading-[1.15] text-text"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
         {title}
       </h2>
-      <div className="text-[17px] leading-[1.78] text-text-dim space-y-5 [&_strong]:text-text [&_strong]:font-semibold">
+      <div className="text-[18px] leading-[1.7] text-text-dim space-y-6 [&_strong]:text-text [&_strong]:font-semibold">
         {children}
       </div>
-    </section>
+    </motion.section>
   );
 }

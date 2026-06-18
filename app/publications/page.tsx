@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 
 const TABS = [
-  { key: 'nature', label: 'Nature Biotech', badge: 'Technical', accent: '#4caf50', file: 'nature-biotech-version.md' },
-  { key: 'science', label: 'Science Advances', badge: 'Interdisciplinary', accent: '#2196f3', file: 'science-advances-version.md' },
-  { key: 'leonardo', label: 'Leonardo', badge: 'Bioart', accent: '#ff9800', file: 'leonardo-version.md' },
+  { key: 'nature', label: 'Nature Biotech', badge: 'Technical', accent: '#00d4aa', file: 'nature-biotech-version.md' },
+  { key: 'science', label: 'Science Advances', badge: 'Interdisciplinary', accent: '#4aa0ff', file: 'science-advances-version.md' },
+  { key: 'leonardo', label: 'Leonardo', badge: 'Bioart', accent: '#ffaa00', file: 'leonardo-version.md' },
 ];
 
 const META: Record<string, { focus: string; citation: string; length: string; audience: string }> = {
@@ -61,39 +61,89 @@ export default function PublicationsPage() {
   const activeContent = content[active];
 
   return (
-    <div className="max-w-[960px] mx-auto px-6 pb-12">
-      <header className="pt-8 mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight mb-1">🧬 Living Archive — Publication Versions</h1>
-        <p className="text-[#888] text-sm mb-6">Three journal-targeted versions of the DNA storage research</p>
+    <div className="max-w-[960px] mx-auto px-6 pb-16">
+      <header className="pt-10 mb-8">
+        <h1
+          className="text-3xl md:text-4xl tracking-[-0.02em] mb-2 text-text"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
+          Publication Versions
+        </h1>
+        <p
+          className="text-text-dim text-sm mb-8"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          Three journal-targeted versions of the DNA storage research
+        </p>
 
-        <div className="flex border-b border-[#2a2a2a] overflow-x-auto" style={{WebkitOverflowScrolling: 'touch'}}>
+        <div className="flex border-b border-border overflow-x-auto" style={{WebkitOverflowScrolling: 'touch'}}>
           {TABS.map(tab => (
             <button key={tab.key}
               onClick={() => setActive(tab.key)}
-              className={`px-5 py-3 border-none text-sm cursor-pointer relative transition-colors whitespace-nowrap ${active === tab.key ? 'text-[#e0e0e0] font-semibold' : 'text-[#888] hover:text-[#e0e0e0]'}`}
+              className={`px-5 py-3 border-none text-sm cursor-pointer relative transition-colors whitespace-nowrap bg-transparent ${
+                active === tab.key
+                  ? 'text-text font-semibold'
+                  : 'text-text-dim hover:text-text'
+              }`}
+              style={{ fontFamily: 'var(--font-mono)' }}
             >
               {tab.label}
-              <span style={{background: tab.accent, color: tab.accent === '#2196f3' ? '#fff' : '#000'}} className="inline-block px-1 py-0.5 rounded text-[0.6rem] ml-2 align-middle">{tab.badge}</span>
-              {active === tab.key && <span className="absolute bottom-[-1px] left-0 right-0 h-[2px]" style={{background: tab.accent}} />}
+              <span
+                className="inline-block px-1.5 py-0.5 ml-2 text-[0.6rem] uppercase tracking-[0.1em] align-middle"
+                style={{
+                  background: 'transparent',
+                  color: tab.accent,
+                  border: `1px solid ${tab.accent}`,
+                }}
+              >
+                {tab.badge}
+              </span>
+              {active === tab.key && (
+                <span
+                  className="absolute bottom-[-1px] left-0 right-0 h-[2px]"
+                  style={{ background: tab.accent }}
+                />
+              )}
             </button>
           ))}
         </div>
       </header>
 
-      <div className="bg-[#141414] border border-[#2a2a2a] rounded-lg p-5 mb-6">
-        <h3 className="text-xs uppercase tracking-widest text-[#888] mb-3">Target Journal Profile</h3>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="p-6 border border-border mb-8">
+        <h3
+          className="text-[10px] uppercase tracking-[0.2em] text-text-faint mb-4"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          Target Journal Profile
+        </h3>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {[['Focus', activeMeta.focus], ['Citation', activeMeta.citation], ['Length', activeMeta.length], ['Audience', activeMeta.audience]].map(([label, val]) => (
-            <div key={label}><label className="block text-[0.65rem] uppercase tracking-widest text-[#888] mb-0.5">{label}</label><span className="text-sm">{val}</span></div>
+            <div key={label}>
+              <label
+                className="block text-[0.65rem] uppercase tracking-[0.15em] text-text-faint mb-1"
+                style={{ fontFamily: 'var(--font-mono)' }}
+              >
+                {label}
+              </label>
+              <span className="text-sm text-text-dim">{val}</span>
+            </div>
           ))}
         </div>
-        <div className="mt-4 pt-4 border-t border-[#2a2a2a] flex gap-3 flex-wrap">
-          <a href={activeTab.file} download className="inline-flex items-center gap-2 px-4 py-2 border border-[#2a2a2a] rounded-lg bg-[#141414] text-[#e0e0e0] text-xs hover:border-[#888] transition-colors">📄 Download .md</a>
+        <div className="mt-5 pt-5 border-t border-border flex gap-3 flex-wrap">
+          <a
+            href={activeTab.file}
+            download
+            className="inline-flex items-center gap-2 px-4 py-2 border border-border text-text-dim text-[11px] uppercase tracking-[0.1em] hover:border-accent hover:text-accent transition-all"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            ↓ Download .md
+          </a>
         </div>
       </div>
 
-      <div className="article-body text-[#e0e0e0] leading-relaxed"
-        style={{fontFamily: 'Georgia, Times New Roman, serif', fontSize: '0.95rem', lineHeight: '1.8'}}
+      <div
+        className="text-text-dim leading-[1.8] text-[16px] space-y-5"
+        style={{ fontFamily: 'var(--font-body)' }}
         dangerouslySetInnerHTML={{__html: activeContent || '<p><em>Click "Download .md" to view the full text.</em></p>'}}
       />
     </div>
