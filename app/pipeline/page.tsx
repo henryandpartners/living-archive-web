@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { PipelineDnaViz } from '../components/PipelineDnaViz';
 
 const B2B: Record<string, string> = { '00': 'A', '01': 'C', '10': 'G', '11': 'T' };
 const B2Binv: Record<string, string> = { 'A': '00', 'C': '01', 'G': '10', 'T': '11' };
@@ -61,6 +62,7 @@ export default function PipelinePage() {
   const [decIn, setDecIn] = useState('');
   const [decQd, setDecQd] = useState(3);
   const [encOut, setEncOut] = useState('');
+  const [encDna, setEncDna] = useState('');
   const [decOut, setDecOut] = useState('');
 
   const cp = (t: string) => navigator.clipboard.writeText(t);
@@ -91,9 +93,9 @@ export default function PipelinePage() {
       h += `<div style="margin-bottom:0.75rem"><span style="color:#ff4455">⚠ ${stops.length} stop codon(s) found:</span></div>`;
       for (let s of stops) {
         let ctx = dna.slice(Math.max(0, s.p - 6), s.p + 6);
-        h += `<div class="codon-row"><span class="cpos">pos ${s.p}</span><span style="color:#ff4455">${hlv(s.c)}</span><span class="cbadge">STOP</span><span style="color:#666;font-size:0.7rem">frame ${s.fr}</span>
-          <span style="color:#888;font-size:0.7rem">context: ...${hlv(ctx)}...</span>
-          <span style="color:#888;font-size:0.7rem">→ fixed: <span style="color:#00d4aa">${hlv(fixedDNA.slice(s.p, s.p + 3))}</span></span></div>`;
+        h += `<div class="codon-row"><span class="cpos">pos ${s.p}</span><span style="color:#ff4455">${hlv(s.c)}</span><span class="cbadge">STOP</span><span style="color:#8A8A85;font-size:0.7rem">frame ${s.fr}</span>
+          <span style="color:#8A8A85;font-size:0.7rem">context: ...${hlv(ctx)}...</span>
+          <span style="color:#8A8A85;font-size:0.7rem">→ fixed: <span style="color:#00d4aa">${hlv(fixedDNA.slice(s.p, s.p + 3))}</span></span></div>`;
       }
       h += `<div style="margin-top:0.5rem"><span style="color:#00d4aa">✓ ${stops.length} stop(s) fixed → ${fixedStops.length} remaining</span></div>`;
     } else {
@@ -131,11 +133,12 @@ export default function PipelinePage() {
       <div class="detail-card"><h5>Length</h5><div class="val">${fixedDNA.length} nt</div></div>
       <div class="detail-card"><h5>Encoding</h5><div class="val">2 bits/base</div></div></div>
       <div class="detail-card" style="margin-top:0.75rem"><h5>DNA Sequence (click to copy)</h5>
-      <div class="val dna-seq" style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:4px;padding:1rem;margin-top:0.5rem;font-size:0.95rem;line-height:2;cursor:pointer" onclick="navigator.clipboard.writeText('${fixedDNA}')" title="Click to copy">${hlv(fixedDNA)}</div>
+      <div class="val dna-seq" style="background:#F3F1EB;border:1px solid #E8E5DE;border-radius:4px;padding:1rem;margin-top:0.5rem;font-size:0.95rem;line-height:2;cursor:pointer" onclick="navigator.clipboard.writeText('${fixedDNA}')" title="Click to copy">${hlv(fixedDNA)}</div>
       <div class="info-text" style="margin-top:0.5rem">Click the sequence above to copy it.</div>
       </div></div>`;
 
     setEncOut(h);
+    setEncDna(fixedDNA);
   };
 
   const runDec = () => {
@@ -176,7 +179,7 @@ export default function PipelinePage() {
       <div class="detail-card"><h5>Input type</h5><div class="val">${raw.includes('ATG') && raw.includes('CAT') ? `Wrapped strands (${strands.length})` : 'Raw DNA'}</div></div>
       <div class="detail-card"><h5>Total DNA</h5><div class="val">${n} nt</div></div>
       <div class="detail-card"><h5>Strands</h5><div class="val">${strands.length}</div></div></div>
-      <div class="detail-card" style="margin-top:0.5rem"><h5>DNA (first 200 nt)</h5><div class="val dna-seq">${hlv(allDNA.slice(0, 200))}${n > 200 ? '<span style="color:#555">...</span>' : ''}</div></div>
+      <div class="detail-card" style="margin-top:0.5rem"><h5>DNA (first 200 nt)</h5><div class="val dna-seq">${hlv(allDNA.slice(0, 200))}${n > 200 ? '<span style="color:#8A8A85">...</span>' : ''}</div></div>
       </div></div>`;
 
     let fullData = strands.join('');
@@ -196,13 +199,13 @@ export default function PipelinePage() {
     let bin = d2b(decodedDNA);
     h += `<div class="step active"><div class="step-header"><div class="step-number">3</div><div class="step-title">DNA → Binary</div></div><div class="step-content">
       <div class="detail-grid">
-      <div class="detail-card"><h5>DNA (<span class="ph">${decodedDNA.length} nt</span>)</h5><div class="val dna-seq">${hlv(decodedDNA.slice(0, 120))}${decodedDNA.length > 120 ? '<span style="color:#555">...</span>' : ''}</div></div>
-      <div class="detail-card"><h5>Binary (<span class="ph">${bin.length} bits</span>)</h5><div class="val" style="font-size:0.7rem">${bin.slice(0, 240)}${bin.length > 240 ? '<span style="color:#555">...</span>' : ''}</div></div></div></div>`;
+      <div class="detail-card"><h5>DNA (<span class="ph">${decodedDNA.length} nt</span>)</h5><div class="val dna-seq">${hlv(decodedDNA.slice(0, 120))}${decodedDNA.length > 120 ? '<span style="color:#8A8A85">...</span>' : ''}</div></div>
+      <div class="detail-card"><h5>Binary (<span class="ph">${bin.length} bits</span>)</h5><div class="val" style="font-size:0.7rem">${bin.slice(0, 240)}${bin.length > 240 ? '<span style="color:#8A8A85">...</span>' : ''}</div></div></div></div>`;
 
     let ascii = b2a(bin);
     h += `<div class="step active"><div class="step-header"><div class="step-number">4</div><div class="step-title">Binary → ASCII</div></div><div class="step-content">
       <div class="detail-grid">
-      <div class="detail-card"><h5>Binary (<span class="ph">${bin.length} bits</span>)</h5><div class="val" style="font-size:0.7rem">${bin.slice(0, 240)}${bin.length > 240 ? '<span style="color:#555">...</span>' : ''}</div></div>
+      <div class="detail-card"><h5>Binary (<span class="ph">${bin.length} bits</span>)</h5><div class="val" style="font-size:0.7rem">${bin.slice(0, 240)}${bin.length > 240 ? '<span style="color:#8A8A85">...</span>' : ''}</div></div>
       <div class="detail-card"><h5>ASCII Output</h5><div class="val" style="color:#00d4aa;font-size:1.1rem">${ascii || '(empty)'}</div></div></div></div>`;
 
     let stops = findStops(decodedDNA);
@@ -212,7 +215,7 @@ export default function PipelinePage() {
       stops.forEach(s => {
         let ctx = decodedDNA.slice(Math.max(0, s.p - 9), s.p + 6);
         h += `<div class="codon-row"><span class="cpos">pos ${s.p}</span><span style="color:#ff4455">${hlv(s.c)}</span><span class="cbadge">STOP</span>
-          <span style="color:#666;font-size:0.7rem">frame ${s.fr}</span><span style="color:#888;font-size:0.7rem">${hlv(ctx)}</span></div>`;
+          <span style="color:#8A8A85;font-size:0.7rem">frame ${s.fr}</span><span style="color:#8A8A85;font-size:0.7rem">${hlv(ctx)}</span></div>`;
       });
       h += `</div></div>`;
     }
@@ -225,15 +228,15 @@ export default function PipelinePage() {
       <div class="detail-card"><h5>Stop codons</h5><div class="val" style="color:${stops.length ? '#ff4455' : '#00d4aa'}">${stops.length}</div></div>
       <div class="detail-card"><h5>Status</h5><div class="val" style="color:${valid ? '#00d4aa' : '#ff4455'}">${valid ? '✓ Decoded successfully' : '✗ Failed'}</div></div></div>
       <div class="detail-card" style="margin-top:0.5rem"><h5>Decoded Output</h5>
-      <div class="val" style="background:black;border:1px solid #1a1a1a;padding:1rem;font-size:1.1rem;line-height:1.8;white-space:pre-wrap;word-break:keep-all">${ascii || '(empty)'}</div>
-      <button style="position:relative;float:right;background:#0f0f0f;color:#7a7a76;border:1px solid #1a1a1a;padding:0.4rem 0.8rem;font-size:0.7rem;cursor:pointer;margin-top:0.5rem" onclick="navigator.clipboard.writeText('${ascii.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')">Copy Output</button>
+      <div class="val" style="background:#F3F1EB;border:1px solid #E8E5DE;padding:1rem;font-size:1.1rem;line-height:1.8;white-space:pre-wrap;word-break:keep-all">${ascii || '(empty)'}</div>
+      <button style="position:relative;float:right;background:#F3F1EB;color:#555552;border:1px solid #E8E5DE;padding:0.4rem 0.8rem;font-size:0.7rem;cursor:pointer;margin-top:0.5rem" onclick="navigator.clipboard.writeText('${ascii.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')">Copy Output</button>
       </div></div>`;
 
     setDecOut(h);
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-8">
+    <div className="max-w-[1200px] mx-auto px-6 py-8 bg-bg">
       <header className="text-center mb-10 pb-6 border-b border-border">
         <h1
           className="text-3xl md:text-4xl tracking-[-0.02em] text-accent mb-2"
@@ -286,7 +289,7 @@ export default function PipelinePage() {
             <textarea
               value={encIn}
               onChange={e => setEncIn(e.target.value)}
-              className="w-full min-h-[120px] bg-black border border-border text-text p-4 resize-y focus:outline-none focus:border-accent transition-colors text-[15px] leading-relaxed"
+              className="w-full min-h-[120px] bg-bg border border-border text-text p-4 resize-y focus:outline-none focus:border-accent transition-colors text-[15px] leading-relaxed"
               style={{ fontFamily: 'var(--font-mono)' }}
             />
             <div className="flex gap-3 mt-4 flex-wrap items-center">
@@ -300,7 +303,7 @@ export default function PipelinePage() {
               <select
                 value={encQd}
                 onChange={e => setEncQd(parseInt(e.target.value))}
-                className="bg-black border border-border text-text px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors"
+                className="bg-bg border border-border text-text px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
                 <option value={0}>No QEC</option>
@@ -311,6 +314,7 @@ export default function PipelinePage() {
             </div>
           </div>
           <div className="steps-container" dangerouslySetInnerHTML={{__html: encOut}} />
+          {encDna && <PipelineDnaViz dna={encDna} />}
         </div>
       ) : (
         <div>
@@ -325,7 +329,7 @@ export default function PipelinePage() {
               value={decIn}
               onChange={e => setDecIn(e.target.value)}
               placeholder="Paste encoded DNA strands or raw DNA..."
-              className="w-full min-h-[120px] bg-black border border-border text-text p-4 resize-y focus:outline-none focus:border-accent transition-colors text-[15px] leading-relaxed"
+              className="w-full min-h-[120px] bg-bg border border-border text-text p-4 resize-y focus:outline-none focus:border-accent transition-colors text-[15px] leading-relaxed"
               style={{ fontFamily: 'var(--font-mono)' }}
             />
             <div className="flex gap-3 mt-4 flex-wrap items-center">
@@ -339,7 +343,7 @@ export default function PipelinePage() {
               <select
                 value={decQd}
                 onChange={e => setDecQd(parseInt(e.target.value))}
-                className="bg-black border border-border text-text px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors"
+                className="bg-bg border border-border text-text px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
                 <option value={0}>No QEC</option>
@@ -354,30 +358,30 @@ export default function PipelinePage() {
       )}
 
       <style jsx global>{`
-        .step { background: #000; border: 1px solid #1a1a1a; overflow: hidden; margin-bottom: 1.5rem; }
+        .step { background: #FAF8F3; border: 1px solid #E8E5DE; overflow: hidden; margin-bottom: 1.5rem; }
         .step.active { border-color: #00d4aa; }
-        .step-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: #0a0a0a; border-bottom: 1px solid #1a1a1a; }
-        .step-number { background: #00d4aa; color: #000; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
-        .step-title { color: #fafaf7; font-size: 0.95rem; font-weight: 600; font-family: var(--font-body); }
+        .step-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: #F3F1EB; border-bottom: 1px solid #E8E5DE; }
+        .step-number { background: #00d4aa; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+        .step-title { color: #141414; font-size: 0.95rem; font-weight: 600; font-family: var(--font-body); }
         .step-content { padding: 1.5rem; }
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
-        .detail-card { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 0.75rem; }
-        .detail-card h5 { color: #7a7a76; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; font-family: var(--font-mono); }
-        .detail-card .val { color: #fafaf7; font-size: 0.85rem; word-break: break-all; line-height: 1.6; font-family: var(--font-mono); }
+        .detail-card { background: #F3F1EB; border: 1px solid #E8E5DE; padding: 0.75rem; }
+        .detail-card h5 { color: #8A8A85; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; font-family: var(--font-mono); }
+        .detail-card .val { color: #141414; font-size: 0.85rem; word-break: break-all; line-height: 1.6; font-family: var(--font-mono); }
         .dna-seq { font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.5px; line-height: 1.8; }
-        .info-text { color: #7a7a76; font-size: 0.8rem; margin-top: 0.5rem; line-height: 1.6; font-family: var(--font-body); }
+        .info-text { color: #8A8A85; font-size: 0.8rem; margin-top: 0.5rem; line-height: 1.6; font-family: var(--font-body); }
         .stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 0.75rem; margin-top: 1rem; }
-        .stat-card { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 0.75rem; text-align: center; }
+        .stat-card { background: #F3F1EB; border: 1px solid #E8E5DE; padding: 0.75rem; text-align: center; }
         .stat-value { font-size: 1.3rem; color: #00d4aa; font-weight: 700; font-family: var(--font-mono); }
-        .stat-label { font-size: 0.65rem; color: #7a7a76; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; font-family: var(--font-mono); }
-        .strand-row { display: flex; gap: 0.5rem; padding: 0.4rem; margin: 0.15rem 0; background: #0a0a0a; border: 1px solid #121212; align-items: center; font-size: 0.8rem; }
-        .strand-row:hover { background: #0f0f0f; border-color: #1a1a1a; }
+        .stat-label { font-size: 0.65rem; color: #8A8A85; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; font-family: var(--font-mono); }
+        .strand-row { display: flex; gap: 0.5rem; padding: 0.4rem; margin: 0.15rem 0; background: #F3F1EB; border: 1px solid #F0EDE6; align-items: center; font-size: 0.8rem; }
+        .strand-row:hover { background: #EBE9E2; border-color: #E8E5DE; }
         .snum { color: #00d4aa; font-weight: 600; width: 32px; flex-shrink: 0; font-family: var(--font-mono); }
-        .slen { color: #4a4a46; white-space: nowrap; margin-left: auto; font-size: 0.65rem; font-family: var(--font-mono); }
+        .slen { color: #8A8A85; white-space: nowrap; margin-left: auto; font-size: 0.65rem; font-family: var(--font-mono); }
         .sdna { flex: 1; word-break: break-all; line-height: 1.6; }
-        .codon-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem; background: #0a0a0a; border: 1px solid #1a1a1a; margin-bottom: 0.15rem; font-size: 0.8rem; }
-        .cpos { color: #7a7a76; width: 55px; flex-shrink: 0; font-size: 0.7rem; font-family: var(--font-mono); }
+        .codon-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem; background: #F3F1EB; border: 1px solid #E8E5DE; margin-bottom: 0.15rem; font-size: 0.8rem; }
+        .cpos { color: #8A8A85; width: 55px; flex-shrink: 0; font-size: 0.7rem; font-family: var(--font-mono); }
         .cbadge { background: #ff4455; color: #fff; padding: 1px 5px; font-size: 0.65rem; font-weight: 600; font-family: var(--font-mono); }
         .cbadge.fixed { background: #00d4aa; }
         .ph { opacity: 0.5; }

@@ -61,7 +61,7 @@ export default function PublicationsPage() {
   const activeContent = content[active];
 
   return (
-    <div className="max-w-[960px] mx-auto px-6 pb-16">
+    <div className="max-w-[960px] mx-auto px-6 pb-16 bg-bg">
       <header className="pt-10 mb-8">
         <h1
           className="text-3xl md:text-4xl tracking-[-0.02em] mb-2 text-text"

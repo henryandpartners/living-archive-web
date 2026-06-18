@@ -26,12 +26,12 @@ export function SiteNav({ pathname, children }: SiteNavProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAF8F3]/95 backdrop-blur-sm border-b border-border">
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Wordmark */}
         <Link
           href="/"
-          className="text-[15px] tracking-[-0.02em] text-text"
+          className="text-[15px] tracking-[-0.02em] text-text hover:text-text"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Living Archive
@@ -90,7 +90,7 @@ export function SiteNav({ pathname, children }: SiteNavProps) {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden bg-black/98 border-b border-border px-6 py-4 flex flex-col gap-4">
+        <div className="md:hidden bg-[#FAF8F3]/98 border-b border-border px-6 py-4 flex flex-col gap-4">
           {LINKS.map((l) => {
             const active = l.match(pathname);
             return (

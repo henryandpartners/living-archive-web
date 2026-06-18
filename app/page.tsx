@@ -1,35 +1,46 @@
-"use client";
+'use client';
 
-import { Chapter } from "./components/Chapter";
-import { StoryHero } from "./components/StoryHero";
-import { PullQuote } from "./components/PullQuote";
-import { Callout } from "./components/Callout";
-import { ImagePlate } from "./components/ImagePlate";
-import { ChapterFooterCTA } from "./components/ChapterFooterCTA";
-import { ChapterRail } from "./components/ChapterRail";
+import { useMemo } from 'react';
+import { Chapter } from './components/Chapter';
+import { StoryHero } from './components/StoryHero';
+import { PullQuote } from './components/PullQuote';
+import { Callout } from './components/Callout';
+import { ImagePlate } from './components/ImagePlate';
+import { ChapterFooterCTA } from './components/ChapterFooterCTA';
+import { ChapterRail } from './components/ChapterRail';
+import { ChapterTransition } from './components/ChapterTransition';
+import { useScrollProgress } from './hooks/useScrollProgress';
+import { useActiveChapter } from './hooks/useActiveChapter';
 
 const CHAPTERS = [
-  { id: "ch1", number: 1, title: "The Problem" },
-  { id: "ch2", number: 2, title: "The Medium" },
-  { id: "ch3", number: 3, title: "Translation" },
-  { id: "ch4", number: 4, title: "Quantum" },
-  { id: "ch5", number: 5, title: "The Fish" },
-  { id: "ch6", number: 6, title: "Al Mawrid" },
-  { id: "ch7", number: 7, title: "The Temple" },
-  { id: "ch8", number: 8, title: "Ethics" },
-  { id: "ch9", number: 9, title: "Why It Matters" },
+  { id: 'ch1', number: 1, title: 'The Problem' },
+  { id: 'ch2', number: 2, title: 'The Medium' },
+  { id: 'ch3', number: 3, title: 'Translation' },
+  { id: 'ch4', number: 4, title: 'Quantum' },
+  { id: 'ch5', number: 5, title: 'The Fish' },
+  { id: 'ch6', number: 6, title: 'Al Mawrid' },
+  { id: 'ch7', number: 7, title: 'The Temple' },
+  { id: 'ch8', number: 8, title: 'Ethics' },
+  { id: 'ch9', number: 9, title: 'Why It Matters' },
 ];
 
 export default function Home() {
+  const scrollProgress = useScrollProgress();
+  const chapterIds = useMemo(() => CHAPTERS.map((c) => c.id), []);
+  const activeChapter = useActiveChapter(chapterIds);
+
   return (
-    <div className="bg-black text-text antialiased">
-      <StoryHero />
+    <div className="bg-bg text-text antialiased">
+      <StoryHero scrollProgress={scrollProgress} />
+
+      {/* Chapter transition overlay */}
+      <ChapterTransition activeChapter={activeChapter} />
 
       <div className="max-w-6xl mx-auto px-6 flex gap-16">
         {/* Chapter rail sidebar */}
         <aside className="hidden lg:block w-48 flex-shrink-0">
           <div className="pt-16">
-            <ChapterRail chapters={CHAPTERS} />
+            <ChapterRail chapters={CHAPTERS} activeId={activeChapter} />
           </div>
         </aside>
 
@@ -40,14 +51,14 @@ export default function Home() {
           <Chapter number={1} title="The Problem Nobody Saw Coming" id="ch1">
             <p>
               Here&apos;s a scary thought: the photo you took yesterday? The
-              one on your phone?{" "}
+              one on your phone?{' '}
               <strong>It&apos;s already dying.</strong>
             </p>
             <p>
               Not the memory — the actual file. Every hard drive fails. Every
               USB stick degrades. Every cloud server needs electricity to keep
               breathing. The average lifespan of a digital file you&apos;re not
-              actively maintaining is about{" "}
+              actively maintaining is about{' '}
               <strong>three to five years</strong>.
             </p>
             <p>
@@ -57,7 +68,7 @@ export default function Home() {
             <Callout>
               <p>
                 The Library of Alexandria burned down. Hard drives from the
-                1990s are already unreadable. We produce{" "}
+                1990s are already unreadable. We produce{' '}
                 <strong>2.5 quintillion bytes of data every day</strong>, and we
                 have no idea how to keep any of it for longer than a human
                 lifetime.
@@ -66,7 +77,7 @@ export default function Home() {
             <p>
               Henry Tan — an artist from Bangkok working at the intersection of
               art and biology — was looking at a fragile art archive from Abu
-              Dhabi and realized:{" "}
+              Dhabi and realized:{' '}
               <strong>
                 these documents are one fire away from being gone forever.
               </strong>
@@ -82,7 +93,7 @@ export default function Home() {
             </p>
             <p
               className="text-3xl text-text pt-2"
-              style={{ fontFamily: "var(--font-display)" }}
+              style={{ fontFamily: 'var(--font-display)' }}
             >
               DNA.
             </p>
@@ -92,7 +103,7 @@ export default function Home() {
           <Chapter number={2} title="The Medium That Outlived the Dinosaurs" id="ch2">
             <p>
               DNA is the OG hard drive. It stores the blueprint for every
-              living thing on Earth in a language made of just four letters:{" "}
+              living thing on Earth in a language made of just four letters:{' '}
               <strong>A, C, G, and T</strong>.
             </p>
             <ImagePlate
@@ -103,16 +114,16 @@ export default function Home() {
             />
             {[
               {
-                label: "Density:",
+                label: 'Density:',
                 text: "One gram of DNA can store 117 exabytes. That's every movie, every song, every Wikipedia article — in a teaspoon.",
               },
               {
-                label: "Longevity:",
+                label: 'Longevity:',
                 text: "We've read DNA from specimens 50,000 years old. Mammoth DNA. Still readable. After 50 millennia.",
               },
               {
-                label: "Self-repair:",
-                text: "Living organisms actively maintain and repair their DNA. Try getting your MacBook to do that.",
+                label: 'Self-repair:',
+                text: 'Living organisms actively maintain and repair their DNA. Try getting your MacBook to do that.',
               },
             ].map((f, i) => (
               <div key={i} className="flex gap-3 leading-[1.7]">
@@ -126,7 +137,7 @@ export default function Home() {
             ))}
             <p>
               The math was irresistible. If you could translate digital data
-              into DNA code, you&apos;d have a storage medium that literally{" "}
+              into DNA code, you&apos;d have a storage medium that literally{' '}
               <strong>
                 maintains itself, reproduces itself, and can survive ice ages
               </strong>
@@ -147,7 +158,7 @@ export default function Home() {
             <p>Here&apos;s how you turn a piece of text into DNA:</p>
             <p>
               First, convert the text to binary. The letter &ldquo;A&rdquo;
-              becomes{" "}
+              becomes{' '}
               <code className="text-accent px-1.5 py-0.5 text-sm bg-bg-elev">
                 01000001
               </code>
@@ -165,15 +176,15 @@ export default function Home() {
               </p>
             </Callout>
             <p>
-              That&apos;s why the team built a{" "}
+              That&apos;s why the team built a{' '}
               <strong>screening pipeline</strong>. Before any encoded DNA touches
               a living organism:
             </p>
             {[
-              "Stop codons? These would interrupt protein production and potentially harm the fish.",
-              "Toxic proteins? No accidentally creating poison.",
-              "Pathogen-like? Don't want the fish triggering immune responses.",
-              "GC balanced? Too many G's and C's and the DNA folds weirdly.",
+              'Stop codons? These would interrupt protein production and potentially harm the fish.',
+              'Toxic proteins? No accidentally creating poison.',
+              'Pathogen-like? Don\'t want the fish triggering immune responses.',
+              'GC balanced? Too many G\'s and C\'s and the DNA folds weirdly.',
             ].map((item, i) => (
               <div key={i} className="flex gap-3 leading-[1.7]">
                 <span className="text-accent font-bold mt-0.5 shrink-0">
@@ -184,7 +195,7 @@ export default function Home() {
             ))}
             <p>
               Think of it as a spell-checker, but instead of typos, it checks
-              for{" "}
+              for{' '}
               <strong>&ldquo;will this accidentally kill the fish.&rdquo;</strong>
             </p>
           </Chapter>
@@ -192,7 +203,7 @@ export default function Home() {
           {/* Ch 4 */}
           <Chapter number={4} title="The Quantum Part" id="ch4">
             <p>
-              DNA isn&apos;t perfect. When fish reproduce, about{" "}
+              DNA isn&apos;t perfect. When fish reproduce, about{' '}
               <strong>1% of the bases</strong> get swapped, deleted, or
               inserted. Over generations, your encoded catalog turns into
               gibberish.
@@ -202,7 +213,7 @@ export default function Home() {
               two backups. <strong>97% accuracy with 3× overhead</strong>.
             </p>
             <p>
-              But Henry went bigger.{" "}
+              But Henry went bigger.{' '}
               <strong>He borrowed from quantum computing.</strong>
             </p>
 
@@ -210,22 +221,22 @@ export default function Home() {
               <div
                 className="text-6xl md:text-8xl font-bold leading-none"
                 style={{
-                  fontFamily: "var(--font-display)",
-                  color: "var(--color-accent)",
+                  fontFamily: 'var(--font-display)',
+                  color: 'var(--color-accent)',
                 }}
               >
                 99.999%
               </div>
               <p
                 className="mt-3 tracking-wide text-text-faint text-[11px]"
-                style={{ fontFamily: "var(--font-mono)" }}
+                style={{ fontFamily: 'var(--font-mono)' }}
               >
                 accuracy at 1% error rates, with only 1.8× overhead
               </p>
             </div>
 
             <p>
-              Quantum computers use{" "}
+              Quantum computers use{' '}
               <strong>surface code error correction</strong> — a 2D grid with
               clever math to detect and fix errors. Henry adapted this for DNA,
               mapping &ldquo;X errors&rdquo; (bit flips) and &ldquo;Z
@@ -254,7 +265,7 @@ export default function Home() {
           {/* Ch 5 */}
           <Chapter number={5} title="Putting It In The Fish" id="ch5">
             <p>
-              You inject encoded DNA into a{" "}
+              You inject encoded DNA into a{' '}
               <strong>zebrafish embryo at the one-cell stage</strong> — a
               fertilized egg that hasn&apos;t decided what it&apos;s going to be
               yet.
@@ -270,11 +281,11 @@ export default function Home() {
             </PullQuote>
             <p>
               Two designs — fusion and P2A — both worked. Some fish glow, some
-              don&apos;t. The glowing ones?{" "}
+              don&apos;t. The glowing ones?{' '}
               <strong>Those are your data carriers.</strong>
             </p>
             <p>
-              Breed them. Two generations later, sequence the DNA.{" "}
+              Breed them. Two generations later, sequence the DNA.{' '}
               <strong>Did the data survive?</strong>
             </p>
             <p>
@@ -286,15 +297,15 @@ export default function Home() {
           <Chapter number={6} title="The Al Mawrid Archive" id="ch6">
             <p>So what exactly got encoded?</p>
             <p>
-              The{" "}
+              The{' '}
               <strong>
                 Al Mawrid Arab Center for the Study of Art
-              </strong>{" "}
+              </strong>{' '}
               at NYU Abu Dhabi collects foundational documents of modern Arab
               art history. Catalogs. Exhibition records. Artist statements.
             </p>
             <p>
-              One particularly precious item: the catalog from the{" "}
+              One particularly precious item: the catalog from the{' '}
               <strong>
                 First Exhibition of the Emirates Fine Arts Society, Abu Dhabi,
                 1980
@@ -316,7 +327,7 @@ export default function Home() {
             </PullQuote>
             <p>
               By encoding these materials into living organisms, the project
-              asks:{" "}
+              asks:{' '}
               <strong>
                 what if the archive wasn&apos;t something you store in a
                 building, but something you keep alive?
@@ -331,7 +342,7 @@ export default function Home() {
               They&apos;re part of something bigger.
             </p>
             <p>
-              Henry is building the{" "}
+              Henry is building the{' '}
               <strong>Temple of Singularity</strong> — an installation combining
               living organisms, archival display, and interactive technology.
             </p>
@@ -339,7 +350,7 @@ export default function Home() {
               You walk into a dimly lit room. In the center, a tank of zebrafish
               — each carrying encoded cultural memory. Around the tank, the
               original documents. On screens, a real-time DNA sequencer reads
-              the fish&apos;s genetic code and{" "}
+              the fish&apos;s genetic code and{' '}
               <strong>decodes the data back into text</strong>.
             </p>
             <PullQuote>
@@ -376,10 +387,10 @@ export default function Home() {
                 <strong>What about cultural sovereignty?</strong>
               </p>
               <p>
-                The project includes protocols for{" "}
+                The project includes protocols for{' '}
                 <strong>
                   Free, Prior, and Informed Consent (FPIC)
-                </strong>{" "}
+                </strong>{' '}
                 — ensuring communities have agency over how their heritage is
                 encoded, stored, and displayed.
               </p>
@@ -390,10 +401,10 @@ export default function Home() {
               </p>
               <p>
                 Eventually, every fish dies. The transgene might be lost. But
-                that&apos;s partly the point. Henry calls this the{" "}
+                that&apos;s partly the point. Henry calls this the{' '}
                 <strong>&ldquo;living archive paradigm&rdquo;</strong> — unlike a
                 hard drive that fails suddenly, a living archive degrades
-                gradually, and its degradation is itself meaningful.{" "}
+                gradually, and its degradation is itself meaningful.{' '}
                 <strong>The imperfection is the feature.</strong>
               </p>
             </Callout>

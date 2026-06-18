@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — near-monochrome base */
-  --color-bg: #000000;
-  --color-bg-elev: #0a0a0a;
-  --color-bg-elev-2: #0f0f0f;
-  --color-border: #1a1a1a;
-  --color-border-soft: #121212;
+  /* Surfaces — light paper palette */
+  --color-bg: #FAF8F3;
+  --color-bg-elev: #F3F1EB;
+  --color-bg-elev-2: #EBE9E2;
+  --color-border: #E8E5DE;
+  --color-border-soft: #F0EDE6;
 
   /* Text */
-  --color-text: #fafaf7;
-  --color-text-dim: #7a7a76;
-  --color-text-faint: #4a4a46;
+  --color-text: #141414;
+  --color-text-dim: #555552;
+  --color-text-faint: #8A8A85;
 
   /* Accent — bioluminescent green, used sparingly */
   --color-accent: #00d4aa;
-  --color-accent-soft: #0d2a24;
-  --color-accent-border: #1a3a32;
-  --color-accent-hover: #00f0c0;
+  --color-accent-soft: #e0faf4;
+  --color-accent-border: #b8eedf;
+  --color-accent-hover: #00b894;
 
   /* Functional palette — Pipeline / DNA only */
   --color-dna-a: #00d4aa;
@@ -94,6 +94,15 @@ a:hover {
 .scroll-reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Vignette overlay for WebGL hero */
+.vignette-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.08) 100%);
 }
 
 /* Respect reduced motion */
