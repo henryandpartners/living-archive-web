@@ -236,7 +236,7 @@ export default function PipelinePage() {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto px-6 py-8 bg-bg">
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 bg-bg">
       <header className="text-center mb-10 pb-6 border-b border-border">
         <h1
           className="text-3xl md:text-4xl tracking-[-0.02em] text-accent mb-2"
@@ -254,7 +254,7 @@ export default function PipelinePage() {
 
       <div className="flex mb-8 border-b border-border">
         <button
-          className={`px-6 py-3 cursor-pointer border-none border-b-2 text-sm transition-all bg-transparent ${
+          className={`px-4 sm:px-6 py-3 cursor-pointer border-none border-b-2 text-sm transition-all bg-transparent ${
             tab === 'enc'
               ? 'text-accent border-accent'
               : 'text-text-dim border-transparent hover:text-text'
@@ -265,7 +265,7 @@ export default function PipelinePage() {
           Encode
         </button>
         <button
-          className={`px-6 py-3 cursor-pointer border-none border-b-2 text-sm transition-all bg-transparent ${
+          className={`px-4 sm:px-6 py-3 cursor-pointer border-none border-b-2 text-sm transition-all bg-transparent ${
             tab === 'dec'
               ? 'text-accent border-accent'
               : 'text-text-dim border-transparent hover:text-text'
@@ -360,10 +360,12 @@ export default function PipelinePage() {
       <style jsx global>{`
         .step { background: #FAF8F3; border: 1px solid #E8E5DE; overflow: hidden; margin-bottom: 1.5rem; }
         .step.active { border-color: #00d4aa; }
-        .step-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: #F3F1EB; border-bottom: 1px solid #E8E5DE; }
+        .step-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: #F3F1EB; border-bottom: 1px solid #E8E5DE; }
+        @media (min-width: 640px) { .step-header { padding: 1rem 1.5rem; gap: 1rem; } }
         .step-number { background: #00d4aa; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
         .step-title { color: #141414; font-size: 0.95rem; font-weight: 600; font-family: var(--font-body); }
-        .step-content { padding: 1.5rem; }
+        .step-content { padding: 1rem 0.75rem; }
+        @media (min-width: 640px) { .step-content { padding: 1.5rem; } }
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
         .detail-card { background: #F3F1EB; border: 1px solid #E8E5DE; padding: 0.75rem; }

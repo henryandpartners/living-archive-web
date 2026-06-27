@@ -22,7 +22,7 @@ export function ImagePlate({
 }: ImagePlateProps) {
   return (
     <motion.figure
-      className={(fullBleed ? "-mx-6 " : "") + "my-12"}
+      className={(fullBleed ? "-mx-4 sm:-mx-6 " : "") + "my-12"}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}

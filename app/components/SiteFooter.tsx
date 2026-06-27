@@ -1,9 +1,9 @@
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border mt-24 bg-bg">
+    <footer className="border-t border-border mt-16 md:mt-24 bg-bg">
       <div
-        className="max-w-6xl mx-auto px-6 py-12 text-[10px] tracking-[0.15em] uppercase text-text-faint flex flex-col sm:flex-row gap-4 justify-between items-center"
-        style={{ fontFamily: "var(--font-mono)" }}
+        className="max-w-6xl mx-auto px-4 sm:px-6 py-12 text-[10px] tracking-[0.15em] uppercase text-text-faint flex flex-col sm:flex-row gap-4 justify-between items-center"
+        style={{ fontFamily: "var(--font-mono)", lineHeight: '1.8' }}
       >
         <span>Living Archive · Encoding cultural memory into DNA</span>
         <span>

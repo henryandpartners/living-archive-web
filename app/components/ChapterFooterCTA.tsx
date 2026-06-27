@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function ChapterFooterCTA() {
   return (
-    <section className="py-20 border-t border-border text-center">
+    <section className="py-14 md:py-20 border-t border-border text-center">
       <p
         className="text-[10px] tracking-[0.3em] uppercase text-text-faint mb-4"
         style={{ fontFamily: "var(--font-mono)" }}
@@ -20,17 +20,17 @@ export function ChapterFooterCTA() {
         Encode a sentence into DNA in your browser, or open the full technical
         papers.
       </p>
-      <div className="flex flex-wrap justify-center gap-4">
+      <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4">
         <Link
           href="/pipeline"
-          className="inline-flex items-center gap-2 px-8 py-3.5 text-black text-[11px] tracking-[0.18em] uppercase bg-accent border border-accent hover:bg-accent-hover hover:border-accent-hover transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-black text-[11px] tracking-[0.18em] uppercase bg-accent border border-accent hover:bg-accent-hover hover:border-accent-hover transition-all w-full sm:w-auto"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           Try the Pipeline →
         </Link>
         <Link
           href="/publications"
-          className="inline-flex items-center gap-2 px-8 py-3.5 text-text-dim text-[11px] tracking-[0.18em] uppercase border border-border hover:border-text-faint hover:text-text transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-text-dim text-[11px] tracking-[0.18em] uppercase border border-border hover:border-text-faint hover:text-text transition-all w-full sm:w-auto"
           style={{ fontFamily: "var(--font-mono)" }}
         >
           Read the Publications

@@ -36,7 +36,7 @@ export default function Home() {
       {/* Chapter transition overlay */}
       <ChapterTransition activeChapter={activeChapter} />
 
-      <div className="max-w-6xl mx-auto px-6 flex gap-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex gap-8 lg:gap-16">
         {/* Chapter rail sidebar */}
         <aside className="hidden lg:block w-48 flex-shrink-0">
           <div className="pt-16">

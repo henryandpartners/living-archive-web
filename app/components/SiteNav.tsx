@@ -27,7 +27,7 @@ export function SiteNav({ pathname, children }: SiteNavProps) {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAF8F3]/95 backdrop-blur-sm border-b border-border">
-      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         {/* Wordmark */}
         <Link
           href="/"
@@ -63,7 +63,7 @@ export function SiteNav({ pathname, children }: SiteNavProps) {
         {/* Mobile hamburger */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden flex flex-col gap-1 p-1"
+          className="md:hidden flex flex-col gap-1 p-2 min-w-[44px] min-h-[44px] items-center justify-center"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -90,7 +90,7 @@ export function SiteNav({ pathname, children }: SiteNavProps) {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden bg-[#FAF8F3]/98 border-b border-border px-6 py-4 flex flex-col gap-4">
+        <div className="md:hidden bg-[#FAF8F3]/98 border-b border-border px-4 sm:px-6 py-4 flex flex-col gap-1">
           {LINKS.map((l) => {
             const active = l.match(pathname);
             return (
@@ -100,7 +100,7 @@ export function SiteNav({ pathname, children }: SiteNavProps) {
                 onClick={() => setOpen(false)}
                 aria-current={active ? "page" : undefined}
                 className={
-                  "text-[13px] tracking-[0.15em] uppercase transition-colors " +
+                  "block py-3 text-[13px] tracking-[0.15em] uppercase transition-colors " +
                   (active ? "text-accent" : "text-text-dim hover:text-text")
                 }
                 style={{ fontFamily: "var(--font-mono)" }}

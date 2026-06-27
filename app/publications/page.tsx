@@ -61,7 +61,7 @@ export default function PublicationsPage() {
   const activeContent = content[active];
 
   return (
-    <div className="max-w-[960px] mx-auto px-6 pb-16 bg-bg">
+    <div className="max-w-[960px] mx-auto px-4 sm:px-6 pb-16 bg-bg">
       <header className="pt-10 mb-8">
         <h1
           className="text-3xl md:text-4xl tracking-[-0.02em] mb-2 text-text"
@@ -80,7 +80,7 @@ export default function PublicationsPage() {
           {TABS.map(tab => (
             <button key={tab.key}
               onClick={() => setActive(tab.key)}
-              className={`px-5 py-3 border-none text-sm cursor-pointer relative transition-colors whitespace-nowrap bg-transparent ${
+              className={`px-3 sm:px-5 py-3 border-none text-sm cursor-pointer relative transition-colors whitespace-nowrap bg-transparent ${
                 active === tab.key
                   ? 'text-text font-semibold'
                   : 'text-text-dim hover:text-text'
@@ -116,7 +116,7 @@ export default function PublicationsPage() {
         >
           Target Journal Profile
         </h3>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {[['Focus', activeMeta.focus], ['Citation', activeMeta.citation], ['Length', activeMeta.length], ['Audience', activeMeta.audience]].map(([label, val]) => (
             <div key={label}>
               <label
