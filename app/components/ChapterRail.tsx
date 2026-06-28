@@ -1,7 +1,5 @@
 "use client";
-
 import { useActiveChapter } from "../hooks/useActiveChapter";
-import { motion, AnimatePresence } from "framer-motion";
 
 export interface ChapterRailItem {
   id: string;
@@ -11,7 +9,6 @@ export interface ChapterRailItem {
 
 export interface ChapterRailProps {
   chapters: ChapterRailItem[];
-  /** Optional override; when omitted the rail tracks scroll itself. */
   activeId?: string;
 }
 
@@ -23,10 +20,9 @@ export function ChapterRail({ chapters, activeId }: ChapterRailProps) {
   return (
     <nav
       aria-label="Chapters"
-      className="hidden lg:flex flex-col gap-3.5 sticky top-24 self-start"
-      style={{ fontFamily: "var(--font-mono)" }}
+      className="hidden lg:flex flex-col gap-3 sticky top-24 self-start font-mono text-[11px] leading-[1.4]"
     >
-      <span className="text-[9px] tracking-[0.22em] uppercase text-text-faint mb-2">
+      <span className="text-[9px] tracking-[0.22em] uppercase text-text-faint mb-1 font-semibold">
         Chapters
       </span>
       {chapters.map((c) => {
@@ -37,30 +33,23 @@ export function ChapterRail({ chapters, activeId }: ChapterRailProps) {
             href={`#${c.id}`}
             aria-current={isActive ? "true" : undefined}
             className={
-              "flex gap-3 items-center text-[11px] leading-[1.4] transition-all duration-300 " +
+              "flex gap-2.5 items-baseline transition-all duration-200 " +
               (isActive
-                ? "text-accent"
+                ? "text-accent font-semibold"
                 : "text-text-faint hover:text-text-dim")
             }
           >
-            <span className="w-6 tabular-nums text-[11px]">
+            <span
+              className={
+                "w-6 transition-colors " +
+                (isActive ? "text-coral scale-110 inline-block" : "")
+              }
+            >
               {String(c.number).padStart(2, "0")}
             </span>
             <span className="text-[10px] tracking-[0.12em] uppercase">
               {c.title}
             </span>
-            <AnimatePresence>
-              {isActive && (
-                <motion.span
-                  className="block w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0"
-                  layoutId="chapter-dot"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0 }}
-                  transition={{ duration: 0.2 }}
-                />
-              )}
-            </AnimatePresence>
           </a>
         );
       })}

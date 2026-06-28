@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useReveal } from "../hooks/useReveal";
 
 export interface ChapterProps {
   number: number;
@@ -9,33 +9,60 @@ export interface ChapterProps {
   children: React.ReactNode;
 }
 
+/*
+ * Decorative nucleotide bar — shows A/C/G/T colored dots for a chapter
+ */
+function NucBar({ nucs }: { nucs: string[] }) {
+  return (
+    <div className="flex gap-1 mt-1" aria-hidden="true">
+      {nucs.map((n, i) => (
+        <span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full"
+          style={{ background: `var(--color-dna-${n.toLowerCase()})` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+const BARS: Record<number, string[]> = {
+  1: "ACGTACGTACGTACGTACGTAC".split(""),
+  2: "GATCCTGAGATTCGACATGGC".split(""),
+  3: "TTAGCCGATACGTAAGCCGTA".split(""),
+  4: "CGTACGTACGTAACGTACGTC".split(""),
+  5: "GATTACAGATTACAGATTACA".split(""),
+  6: "ACGTACGTACGAACGTACGTG".split(""),
+  7: "TAGCTAGCTAGCTAGCTAGCC".split(""),
+  8: "GCTAGCTAGCTAGCTAGCTAG".split(""),
+  9: "CAGTCAGTCAGTCAGTCAGTT".split(""),
+};
+
 export function Chapter({ number, title, id, children }: ChapterProps) {
+  const { ref, visible } = useReveal();
   const padded = String(number).padStart(2, "0");
+  const nucs = BARS[number] ?? BARS[1];
 
   return (
-    <motion.section
+    <section
       id={id}
-      className="py-14 md:py-28 border-t border-border scroll-mt-24"
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      ref={ref}
+      className={`py-24 md:py-32 border-t border-border-soft scroll-mt-20 reveal ${visible ? "visible" : ""}`}
     >
-      <p
-        className="text-[10px] tracking-[0.3em] uppercase text-accent mb-5"
-        style={{ fontFamily: "var(--font-mono)" }}
-      >
-        Chapter {padded}
-      </p>
-      <h2
-        className="text-2xl sm:text-3xl md:text-4xl tracking-[-0.02em] mb-8 leading-[1.15] text-text"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        {title}
-      </h2>
-      <div className="text-[16px] sm:text-[18px] leading-[1.7] text-text-dim space-y-5 sm:space-y-6 [&_strong]:text-text [&_strong]:font-semibold">
+      <div className="flex items-start gap-4 mb-6">
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-accent mb-1">
+            Chapter {padded}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.02em] leading-[1.1] text-text font-serif">
+            {title}
+          </h2>
+        </div>
+        <NucBar nucs={nucs} />
+      </div>
+      <div className="text-[17px] leading-[1.85] text-text-dim space-y-5 [&_strong]:text-text [&_strong]:font-semibold font-sans">
         {children}
       </div>
-    </motion.section>
+    </section>
   );
 }

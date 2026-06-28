@@ -1,47 +1,32 @@
+"use client";
+
+import { useReveal } from "../hooks/useReveal";
 import Link from "next/link";
 
 export function ChapterFooterCTA() {
+  const { ref, visible } = useReveal();
   return (
-    <section className="py-14 md:py-20 border-t border-border text-center">
-      <p
-        className="text-[10px] tracking-[0.3em] uppercase text-text-faint mb-4"
-        style={{ fontFamily: "var(--font-mono)" }}
-      >
-        After the story
-      </p>
-      <h3
-        className="text-3xl tracking-[-0.02em] mb-3 text-text"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        Try it.{" "}
-        <em className="italic font-light text-text-dim">Or read the science.</em>
-      </h3>
-      <p className="text-[16px] text-text-dim mb-8 max-w-md mx-auto leading-[1.6]">
-        Encode a sentence into DNA in your browser, or open the full technical
-        papers.
-      </p>
-      <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4">
+    <section
+      ref={ref}
+      className={`py-16 reveal ${visible ? "visible" : ""}`}
+    >
+      <div className="bg-bg-dark rounded-2xl p-10 md:p-14 text-center text-[#e8e8e8]">
+        <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-coral mb-4">
+          Continue
+        </p>
+        <h2 className="text-2xl md:text-3xl font-bold mb-4 font-serif text-white">
+          See the technical pipeline
+        </h2>
+        <p className="text-[#8899a8] max-w-md mx-auto mb-8 text-[16px] leading-relaxed">
+          Explore how we encode cultural data into DNA, screen for safety, and apply quantum error correction.
+        </p>
         <Link
           href="/pipeline"
-          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-black text-[11px] tracking-[0.18em] uppercase bg-accent border border-accent hover:bg-accent-hover hover:border-accent-hover transition-all w-full sm:w-auto"
-          style={{ fontFamily: "var(--font-mono)" }}
+          className="inline-flex items-center gap-2 bg-white text-bg-dark px-6 py-3 rounded-full font-semibold text-sm hover:bg-coral-soft transition-colors"
         >
-          Try the Pipeline →
-        </Link>
-        <Link
-          href="/publications"
-          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-text-dim text-[11px] tracking-[0.18em] uppercase border border-border hover:border-text-faint hover:text-text transition-all w-full sm:w-auto"
-          style={{ fontFamily: "var(--font-mono)" }}
-        >
-          Read the Publications
+          View Pipeline <span aria-hidden="true">→</span>
         </Link>
       </div>
-      <p
-        className="mt-8 text-text-faint text-[10px] tracking-[0.15em] uppercase"
-        style={{ fontFamily: "var(--font-mono)" }}
-      >
-        Nature Biotech · Science Advances · Leonardo (MIT Press)
-      </p>
     </section>
   );
 }

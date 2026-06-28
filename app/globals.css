@@ -1,124 +1,144 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — light paper palette */
-  --color-bg: #FAF8F3;
-  --color-bg-elev: #F3F1EB;
-  --color-bg-elev-2: #EBE9E2;
-  --color-border: #E8E5DE;
-  --color-border-soft: #F0EDE6;
+  /* ── Marine Lab Palette ── */
+  --color-bg: #faf7f2;
+  --color-bg-elev: #ffffff;
+  --color-bg-elev-2: #f5f0e8;
+  --color-bg-dark: #0a1a2b;
+  --color-border: #e0d8cc;
+  --color-border-soft: #ede6db;
 
-  /* Text */
-  --color-text: #141414;
-  --color-text-dim: #555552;
-  --color-text-faint: #8A8A85;
+  --color-text: #1a1a1a;
+  --color-text-dim: #5a5550;
+  --color-text-faint: #99948a;
 
-  /* Accent — bioluminescent green, used sparingly */
-  --color-accent: #00d4aa;
-  --color-accent-soft: #e0faf4;
-  --color-accent-border: #b8eedf;
-  --color-accent-hover: #00b894;
+  /* Accent system — ocean + coral */
+  --color-accent: #006994;
+  --color-accent-soft: #d0eaf5;
+  --color-accent-border: #b0d4e8;
+  --color-coral: #e8614d;
+  --color-coral-soft: #fde8e4;
+  --color-gold: #c4983e;
+  --color-gold-soft: #faf0db;
 
-  /* Functional palette — Pipeline / DNA only */
-  --color-dna-a: #00d4aa;
-  --color-dna-c: #4aa0ff;
-  --color-dna-g: #ffaa00;
-  --color-dna-t: #ff4455;
+  /* DNA nucleotides */
+  --color-dna-a: #00aa55;
+  --color-dna-c: #0077cc;
+  --color-dna-g: #cc7700;
+  --color-dna-t: #cc3344;
 
-  /* Fonts — set via next/font/google in layout.tsx */
-  --font-display: var(--font-fraunces), Georgia, serif;
-  --font-body: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), "SF Mono", Menlo, monospace;
+  /* Fonts */
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-dmsans), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "SF Mono", Menlo, monospace;
+
+  /* Animation durations */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-html {
-  background: var(--color-bg);
-  color: var(--color-text);
-  scroll-behavior: smooth;
-}
+html { background: var(--color-bg); scroll-behavior: smooth; }
 
 body {
-  font-family: var(--font-body);
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-family: var(--font-sans);
   background: var(--color-bg);
   color: var(--color-text);
+  line-height: 1.7;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
+a { color: inherit; text-decoration: none; }
 
-a:hover {
-  color: var(--color-accent);
-}
+/* ── DNA Nucleotide Colors ── */
+.base-A { color: var(--color-dna-a); font-weight: 600; }
+.base-C { color: var(--color-dna-c); font-weight: 600; }
+.base-G { color: var(--color-dna-g); font-weight: 600; }
+.base-T { color: var(--color-dna-t); font-weight: 600; }
 
-::selection {
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
-}
-
-/* Reading width clamp */
-.prose-width {
-  max-width: 68ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Pipeline DNA nucleotide colors (unchanged logic) */
-.base-A { color: var(--color-dna-a); font-weight: 500; }
-.base-C { color: var(--color-dna-c); font-weight: 500; }
-.base-G { color: var(--color-dna-g); font-weight: 500; }
-.base-T { color: var(--color-dna-t); font-weight: 500; }
-
-/* -------------------- Animations -------------------- */
-
-/* Scroll-reveal base */
-.scroll-reveal {
+/* ── Scroll-triggered reveals ── */
+.reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
-
-.scroll-reveal.visible {
+.reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Vignette overlay for WebGL hero */
-.vignette-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.08) 100%);
+/* ── DNA Helix Animation ── */
+@keyframes helix-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 4px currentColor; }
+  50% { box-shadow: 0 0 16px currentColor, 0 0 32px currentColor; }
+}
+@keyframes strand-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 60px; }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s var(--ease-out-expo) forwards;
+}
+.anim-delay-1 { animation-delay: 0.15s; opacity: 0; }
+.anim-delay-2 { animation-delay: 0.3s; opacity: 0; }
+.anim-delay-3 { animation-delay: 0.45s; opacity: 0; }
 
-  .scroll-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── DNA Strand decorative element ── */
+.dna-strand {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 8px,
+    var(--color-accent-border) 8px,
+    var(--color-accent-border) 9px
+  ),
+  repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    var(--color-accent-soft) 8px,
+    var(--color-accent-soft) 9px
+  );
+  opacity: 0.15;
+  animation: strand-scroll 4s linear infinite;
+}
+
+/* ── Code / inline ── */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
 }

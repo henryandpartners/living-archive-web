@@ -1,27 +1,23 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, Geist_Mono } from "next/font/google";
+import { Playfair_Display, JetBrains_Mono, DM_Sans } from "next/font/google";
 import { headers } from "next/headers";
-import { PageTransition } from "./components/PageTransition";
 import { SiteNav } from "./components/SiteNav";
 import { SiteFooter } from "./components/SiteFooter";
-import { ScrollProgress } from "./components/ScrollProgress";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  display: "swap",
-  style: ["normal", "italic"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   display: "swap",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
+  variable: "--font-dmsans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -40,15 +36,11 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${geistMono.variable}`}
+      className={`${playfair.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
       <body>
-        <SiteNav pathname={pathname}>
-          {pathname === "/" && <ScrollProgress />}
-        </SiteNav>
-        <main className="pt-14">
-          <PageTransition pathname={pathname}>{children}</PageTransition>
-        </main>
+        <SiteNav pathname={pathname} />
+        <main>{children}</main>
         <SiteFooter />
       </body>
     </html>
