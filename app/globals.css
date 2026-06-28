@@ -1,144 +1,171 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Marine Lab Palette v2 ── */
-  --color-bg: #faf7f2;
-  --color-bg-elev: #ffffff;
-  --color-bg-elev-2: #f5f0e8;
-  --color-bg-dark: #0a1a2b;
-  --color-border: #e0d8cc;
-  --color-border-soft: #ede6db;
+  --color-bg: #ffffff;
+  --color-bg-dark: #031d2e;
+  --color-bg-card: rgba(3, 40, 64, 0.52);
+  --color-border: rgba(0, 42, 70, 0.14);
+  --color-border-light: rgba(255, 255, 255, 0.12);
 
-  --color-text: #1a1a1a;
-  --color-text-dim: #5a5550;
-  --color-text-faint: #99948a;
+  --color-ink: #003054;
+  --color-azure: #0c78b4;
+  --color-muted: #5d7a92;
+  --color-muted-light: #7fa0bd;
+  --color-text: #003054;
+  --color-text-dim: #5d7a92;
+  --color-text-faint: #8fa8be;
 
-  /* Accent system — ocean + coral */
-  --color-accent: #006994;
-  --color-accent-soft: #d0eaf5;
-  --color-accent-border: #b0d4e8;
+  --color-accent: #0c78b4;
+  --color-accent-soft: #d6edfc;
+  --color-accent-border: rgba(12, 120, 180, 0.2);
   --color-coral: #e8614d;
-  --color-coral-soft: #fde8e4;
   --color-gold: #c4983e;
-  --color-gold-soft: #faf0db;
 
-  /* DNA nucleotides */
   --color-dna-a: #00aa55;
   --color-dna-c: #0077cc;
   --color-dna-g: #cc7700;
   --color-dna-t: #cc3344;
 
-  /* Fonts */
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-dmsans), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), "SF Mono", Menlo, monospace;
-
-  /* Animation durations */
-  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { background: var(--color-bg); scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--color-bg); }
 
 body {
   font-family: var(--font-sans);
   background: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-ink);
+  font-weight: 300;
   line-height: 1.7;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-a { color: inherit; text-decoration: none; }
+a { color: inherit; text-decoration: none; transition: color 0.25s; }
+a:hover { color: var(--color-azure); }
 
-/* ── DNA Nucleotide Colors ── */
+::selection { background: var(--color-accent-soft); color: var(--color-azure); }
+
+/* ── DNA Colors ── */
 .base-A { color: var(--color-dna-a); font-weight: 600; }
 .base-C { color: var(--color-dna-c); font-weight: 600; }
 .base-G { color: var(--color-dna-g); font-weight: 600; }
 .base-T { color: var(--color-dna-t); font-weight: 600; }
 
-/* ── Scroll-triggered reveals ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+/* ── Animations ── */
+@keyframes drop {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  50.01% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }
-.reveal.visible {
+
+@keyframes astroFloat {
+  0%, 100% { transform: translateY(-1px) rotate(-5deg); }
+  50%      { transform: translateY(2px) rotate(5deg); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.5s ease forwards, fadeUp 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+/* ── Scroll hint ── */
+.scroll-hint {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  transition: opacity 0.4s;
+}
+.scroll-hint::after {
+  content: "";
+  width: 1px;
+  height: 38px;
+  background: linear-gradient(var(--color-muted), transparent);
+  animation: drop 1.8s infinite;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .scroll-hint::after { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Glass card (dark bg) ── */
+.glass-card {
+  background: rgba(0, 38, 63, 0.40);
+  backdrop-filter: blur(3px);
+  border: 1px solid rgba(146, 210, 247, 0.18);
+  border-radius: 12px;
+  transform: translateY(36px);
+  opacity: 0;
+  transition: opacity 0.5s ease,
+              transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              background 0.3s ease;
+}
+.glass-card.in {
   opacity: 1;
   transform: translateY(0);
 }
-
-/* ── DNA Helix Animation ── */
-@keyframes helix-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 4px currentColor; }
-  50% { box-shadow: 0 0 16px currentColor, 0 0 32px currentColor; }
-}
-@keyframes strand-scroll {
-  from { background-position: 0 0; }
-  to { background-position: 0 60px; }
-}
-@keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(32px); }
-  to { opacity: 1; transform: translateY(0); }
+.glass-card.in:hover {
+  transform: translateY(-7px);
+  background: rgba(8, 70, 120, 0.55);
+  border-color: rgba(146, 210, 247, 0.75);
+  box-shadow: 0 20px 46px rgba(0, 16, 34, 0.45);
 }
 
-.animate-fade-in-up {
-  animation: fade-in-up 0.8s var(--ease-out-expo) forwards;
+/* ── Pill button ── */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 28px;
+  border-radius: 100px;
+  border: 1px solid var(--color-azure);
+  color: var(--color-ink);
+  text-decoration: none;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
 }
-.anim-delay-1 { animation-delay: 0.15s; opacity: 0; }
-.anim-delay-2 { animation-delay: 0.3s; opacity: 0; }
-.anim-delay-3 { animation-delay: 0.45s; opacity: 0; }
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* ── DNA Strand decorative element ── */
-.dna-strand {
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 8px,
-    var(--color-accent-border) 8px,
-    var(--color-accent-border) 9px
-  ),
-  repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 8px,
-    var(--color-accent-soft) 8px,
-    var(--color-accent-soft) 9px
-  );
-  opacity: 0.15;
-  animation: strand-scroll 4s linear infinite;
+.pill-btn:hover {
+  background: var(--color-ink);
+  color: #fff;
+  border-color: var(--color-ink);
 }
 
-/* ── Code / inline ── */
-code {
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
-  padding: 0.15em 0.4em;
-  border-radius: 3px;
+.pill-btn.accent {
+  background: var(--color-azure);
+  color: #fff;
+  border-color: var(--color-azure);
+  box-shadow: 0 10px 26px rgba(12, 120, 180, 0.32);
 }
-
-/* ── Selection ── */
-::selection {
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
+.pill-btn.accent:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
 }

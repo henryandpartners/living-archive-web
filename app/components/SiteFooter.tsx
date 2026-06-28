@@ -1,11 +1,28 @@
+import Link from "next/link";
+
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border-soft bg-bg-elev-2 mt-20">
-      <div className="max-w-6xl mx-auto px-6 py-14 font-mono text-[10px] tracking-[0.15em] uppercase text-text-faint flex flex-wrap gap-6 justify-between">
-        <span>Living Archive · Encoding cultural memory into DNA</span>
-        <span>Nature Biotech · Science Advances · Leonardo (MIT Press)</span>
-        <span>© Henry Tan &amp; Carmen Koessler 2026</span>
-      </div>
+    <footer className="relative z-[3] bg-[#04263d] text-center text-[#7fa0bd] text-[13px] py-[46px] px-6 leading-[1.9]">
+      <p>
+        <b className="text-white font-semibold font-serif">Living Archive</b>{" "}
+        · Henry Tan &amp; Carmen Koessler · NYUAD CGSB
+      </p>
+      <p className="mt-1">
+        <Link href="/pipeline" className="text-[#bfe0f7] hover:text-white">
+          Pipeline
+        </Link>{" "}
+        ·{" "}
+        <Link href="/publications" className="text-[#bfe0f7] hover:text-white">
+          Publications
+        </Link>{" "}
+        ·{" "}
+        <Link href="/" className="text-[#bfe0f7] hover:text-white">
+          Story
+        </Link>
+      </p>
+      <p className="mt-3 text-[11px] text-[#5a7d94]">
+        Artist-in-Residence 2024–2025 · Center for Genomics and Systems Biology
+      </p>
     </footer>
   );
 }
