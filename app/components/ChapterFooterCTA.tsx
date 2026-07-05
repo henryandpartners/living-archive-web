@@ -1,29 +1,75 @@
 "use client";
 
-import { useReveal } from "../hooks/useReveal";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 export function ChapterFooterCTA() {
-  const { ref, visible } = useReveal();
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          io.unobserve(el);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       ref={ref}
-      className={`py-16 reveal ${visible ? "visible" : ""}`}
+      className={`section-spacing ${visible ? "reveal visible" : "reveal"}`}
     >
-      <div className="bg-bg-dark rounded-2xl p-10 md:p-14 text-center text-[#e8e8e8]">
-        <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-coral mb-4">
+      <div
+        style={{
+          background: "var(--bg-alt)",
+          borderRadius: 14,
+          padding: "2.5rem 2rem",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.65rem",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--text-muted)",
+            marginBottom: "0.5rem",
+          }}
+        >
           Continue
         </p>
-        <h2 className="text-2xl md:text-3xl font-bold mb-4 font-serif text-white">
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontWeight: 700,
+            fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)",
+            marginBottom: "0.5rem",
+          }}
+        >
           See the technical pipeline
         </h2>
-        <p className="text-[#8899a8] max-w-md mx-auto mb-8 text-[16px] leading-relaxed">
-          Explore how we encode cultural data into DNA, screen for safety, and apply quantum error correction.
-        </p>
-        <Link
-          href="/pipeline"
-          className="inline-flex items-center gap-2 bg-white text-bg-dark px-6 py-3 rounded-full font-semibold text-sm hover:bg-coral-soft transition-colors"
+        <p
+          style={{
+            fontSize: "0.9rem",
+            color: "var(--text-secondary)",
+            maxWidth: 440,
+            margin: "0 auto 1.25rem",
+          }}
         >
+          Explore how we encode cultural data into DNA, screen for safety, and apply quantum
+          error correction.
+        </p>
+        <Link href="/pipeline" className="btn btn-primary">
           View Pipeline <span aria-hidden="true">→</span>
         </Link>
       </div>

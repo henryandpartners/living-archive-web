@@ -1,14 +1,210 @@
-/* Minimal reset — plain text only */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── Living Archive — Warm Paper Editorial ── */
 
-body {
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-  color: #000;
-  background: #fff;
+/* Reset */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Design tokens */
+:root {
+  --bg: #faf8f5;
+  --bg-alt: #f4f0eb;
+  --bg-card: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #5c554e;
+  --text-muted: #9c958e;
+  --border: rgba(0,0,0,0.08);
+  --accent: #b85c4a;
+  --accent-soft: #f0e6e2;
+  --accent-light: #f7f0ec;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --max-w-read: 680px;
+  --max-w-content: 1000px;
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
 }
 
-a { color: #00e; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography ── */
+::selection { background: var(--accent-soft); color: var(--accent); }
+
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; color: var(--text); }
+h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); letter-spacing: -0.015em; }
+h3 { font-size: clamp(1.1rem, 2vw, 1.3rem); letter-spacing: -0.01em; }
+
+p { color: var(--text-secondary); margin-bottom: 1.2rem; }
+.lead { font-size: 1.1rem; line-height: 1.7; color: var(--text-secondary); }
+
+a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.7; }
+
+strong { color: var(--text); font-weight: 600; }
+em { font-style: italic; }
+small { font-size: 0.82rem; color: var(--text-muted); }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* ── Blockquote ── */
+blockquote {
+  border-left: 2px solid var(--accent);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+blockquote strong { font-style: normal; }
+
+/* ── Code inline ── */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--bg-alt);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+/* ── Code block ── */
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  background: #1a1a1a;
+  color: #e8e4df;
+  padding: 1.25rem;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* ── Lists ── */
+ul, ol { margin: 1rem 0 1.5rem; padding-left: 1.4rem; color: var(--text-secondary); }
+li { margin-bottom: 0.4rem; }
+
+/* ── Container helpers ── */
+.container-read {
+  max-width: var(--max-w-read);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.container-content {
+  max-width: var(--max-w-content);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Section spacing ── */
+.section-spacing { padding: 3rem 0; }
+@media (min-width: 768px) { .section-spacing { padding: 4rem 0; } }
+
+/* ── Section label (mono) ── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #a34d3d;
+  opacity: 1;
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* ── Select / Input ── */
+select, input, textarea {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text);
+}
+select:focus, input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+textarea { resize: vertical; }
+
+/* ── Fade in reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.anim-fade-in { animation: fadeInUp 0.6s var(--ease) both; }
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.35s; }
+
+/* ── Nav link hover (server-safe) ── */
+.nav-link:hover { color: var(--accent) !important; }
+
+/* ── Mobile first ── */
+@media (max-width: 480px) {
+  :root { --max-w-read: 100%; }
+  .container-read { padding: 0 16px; }
+  .container-content { padding: 0 16px; }
+}
