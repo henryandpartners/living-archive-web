@@ -100,11 +100,11 @@ export default function StoryPage() {
           padding: "0 20px",
         }}
       >
-        {CHAPTERS.map((ch) => (
+        {CHAPTERS.map((ch, i) => (
           <section
             key={ch.id}
             id={ch.id}
-            className="reveal"
+            className={i === 0 ? "reveal visible" : "reveal"}
             style={{
               padding: "3.5rem 0",
               scrollMarginTop: 80,
