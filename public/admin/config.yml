@@ -2,8 +2,7 @@ backend:
   name: github
   repo: henryandpartners/living-archive-web
   branch: main
-  # Use implicit OAuth — you'll authenticate via GitHub directly
-  # No custom OAuth app needed
+  auth_scope: repo
 
 publish_mode: editorial_workflow
 media_folder: "public/uploads"
@@ -15,7 +14,7 @@ collections:
   - name: "chapters"
     label: "Chapters"
     label_singular: "Chapter"
-    description: "Edit the 9 story chapters — drag images, embed YouTube links"
+    description: "Edit the 9 story chapters"
     folder: "content/chapters"
     create: false
     extension: "md"
@@ -26,11 +25,11 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Short Label (for TOC)", name: "short", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Image (optional)", name: "image", widget: "image", required: false }
-      - { label: "YouTube Video URL (optional)", name: "video_url", widget: "string", required: false }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "YouTube URL", name: "video_url", widget: "string", required: false }
 
   - name: "settings"
-    label: "Site Settings"
+    label: "Settings"
     folder: "content"
     create: false
     slug: "{{slug}}"
@@ -39,20 +38,20 @@ collections:
         name: "home"
         file: "content/home.md"
         fields:
-          - { label: "Institution Badge", name: "institution", widget: "string" }
+          - { label: "Institution", name: "institution", widget: "string" }
           - { label: "Headline Line 1", name: "headline_1", widget: "string" }
-          - { label: "Headline Line 2 (italic)", name: "headline_2", widget: "string" }
+          - { label: "Headline Line 2", name: "headline_2", widget: "string" }
           - { label: "Description", name: "description", widget: "text" }
           - { label: "Byline", name: "byline", widget: "string" }
-      - label: "Pipeline Page"
+      - label: "Pipeline"
         name: "pipeline"
         file: "content/pipeline.md"
         fields:
-          - { label: "Page Title", name: "title", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
           - { label: "Description", name: "description", widget: "text" }
-      - label: "Publications Page"
+      - label: "Publications"
         name: "publications"
         file: "content/publications.md"
         fields:
-          - { label: "Page Title", name: "title", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
           - { label: "Description", name: "description", widget: "text" }
