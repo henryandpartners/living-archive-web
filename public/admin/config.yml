@@ -1,0 +1,42 @@
+backend:
+  name: github
+  repo: henryandpartners/living-archive-web
+  branch: main
+  base_url: https://living-archive-web.vercel.app
+  auth_endpoint: api/auth
+
+publish_mode: editorial_workflow
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    description: "Static page settings (hero, pipeline, publications)"
+    folder: "content/pages"
+    create: false
+    slug: "{{slug}}"
+    fields:
+      - { label: "Page Title", name: "title", widget: "string" }
+      - { label: "Institution Badge", name: "institution", widget: "string", required: false, hint: "Only used on Story page" }
+      - { label: "Headline Line 1", name: "headline_1", widget: "string", required: false }
+      - { label: "Headline Line 2", name: "headline_2", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Byline", name: "byline", widget: "string", required: false }
+      - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+
+  - name: "chapters"
+    label: "Chapters"
+    label_singular: "Chapter"
+    description: "The 9 story chapters — drag to reorder"
+    folder: "content/chapters"
+    create: false
+    extension: "md"
+    slug: "{{fields.number}}"
+    fields:
+      - { label: "Chapter Number", name: "number", widget: "number", value_type: "int", min: 1, max: 9 }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Short Label (for TOC)", name: "short", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Image (optional)", name: "image", widget: "image", required: false }
+      - { label: "YouTube Video URL (optional)", name: "video_url", widget: "string", required: false }
