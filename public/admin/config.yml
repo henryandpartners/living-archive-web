@@ -2,36 +2,57 @@ backend:
   name: github
   repo: henryandpartners/living-archive-web
   branch: main
-  base_url: https://living-archive-web.vercel.app
-  auth_endpoint: api/auth
+  # Use implicit OAuth — you'll authenticate via GitHub directly
+  # No custom OAuth app needed
 
 publish_mode: editorial_workflow
 media_folder: "public/uploads"
 public_folder: "/uploads"
 site_url: https://living-archive-web.vercel.app
 display_url: https://living-archive-web.vercel.app
-logo_url: https://living-archive-web.vercel.app/favicon.ico
 
 collections:
-  - name: "pages"
-    label: "Pages"
-    folder: "content/pages"
-    create: false
-    slug: "{{slug}}"
-    fields:
-      - { label: "Page Title", name: "title", widget: "string" }
-
   - name: "chapters"
     label: "Chapters"
     label_singular: "Chapter"
+    description: "Edit the 9 story chapters — drag images, embed YouTube links"
     folder: "content/chapters"
     create: false
     extension: "md"
-    slug: "{{fields.number}}"
+    slug: "{{number}}"
+    format: "frontmatter"
     fields:
       - { label: "Chapter Number", name: "number", widget: "number", value_type: "int", min: 1, max: 9 }
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Short Label (TOC)", name: "short", widget: "string" }
+      - { label: "Short Label (for TOC)", name: "short", widget: "string" }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Image", name: "image", widget: "image", required: false }
-      - { label: "YouTube URL", name: "video_url", widget: "string", required: false }
+      - { label: "Image (optional)", name: "image", widget: "image", required: false }
+      - { label: "YouTube Video URL (optional)", name: "video_url", widget: "string", required: false }
+
+  - name: "settings"
+    label: "Site Settings"
+    folder: "content"
+    create: false
+    slug: "{{slug}}"
+    files:
+      - label: "Story Page"
+        name: "home"
+        file: "content/home.md"
+        fields:
+          - { label: "Institution Badge", name: "institution", widget: "string" }
+          - { label: "Headline Line 1", name: "headline_1", widget: "string" }
+          - { label: "Headline Line 2 (italic)", name: "headline_2", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Byline", name: "byline", widget: "string" }
+      - label: "Pipeline Page"
+        name: "pipeline"
+        file: "content/pipeline.md"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+      - label: "Publications Page"
+        name: "publications"
+        file: "content/publications.md"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
